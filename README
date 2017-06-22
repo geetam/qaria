@@ -1,11 +1,11 @@
 You need Qt5, libaria2 and CMake 2.8.11 or higher
 -- Build instructions --
 
-cd /your/project/build
+cd /path/to/qaria/build
 cmake ../
 make
 
 ./qaria
 
-![Alt text](https://raw.githubusercontent.com/geetam/qaria/master/screen.png)
+![ScreenShots](https://raw.githubusercontent.com/geetam/qaria/master/screen.png)
 
