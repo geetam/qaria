@@ -73,7 +73,7 @@ private:
     aria2::KeyVals ariaOptions;
     QFuture<void> ariaFuture;
     QString formatDownSpeed(int64_t bytesPerSec);
-    
+    bool ariaLoopExit = false;
     
     
     

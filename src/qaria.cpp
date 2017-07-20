@@ -51,7 +51,6 @@ qaria::qaria(QWidget *parent) :
     connect(ui->actionPause, &QAction::triggered, this, &qaria::pauseButtonClicked);
     connect(ui->actionResume, &QAction::triggered, this, &qaria::resumeButtonClicked);
     connect(ui->actionRemove, &QAction::triggered, this, &qaria::removeButtonClicked);
-    
     db =  QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("downloadTable");
     db.open();
@@ -164,7 +163,10 @@ int qaria::eventCallback(aria2::Session* session, aria2::DownloadEvent event, ar
 
 qaria::~qaria()
 {
+    ariaLoopExit = true;
+    ariaFuture.waitForFinished();
     delete ui;
+    db.close();
     aria2::sessionFinal(ariaSession);
     aria2::libraryDeinit();
 }
@@ -176,11 +178,11 @@ void qaria::ariaLoop()
     qDebug() << "aria loop thread created";
     auto start = std::chrono::steady_clock::now();
 
-    for( ; ; )
+    while( !ariaLoopExit )
     {
-        
         int rv = aria2::run(ariaSession, aria2::RUN_ONCE);
         if(rv != 1) {
+            
             break;
         }
 //         the application can call aria2 API to add URI or query progress
